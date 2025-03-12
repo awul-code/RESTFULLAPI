@@ -43,9 +43,9 @@ export default [
             // Aturan dari @typescript-eslint
             // "@typescript-eslint/no-unused-vars": "warn",
             '@typescript-eslint/restrict-template-expressions': 'off',
-            "@typescript-eslint/explicit-function-return-type": "off",
+            '@typescript-eslint/explicit-function-return-type': 'off',
             // Aturan gaya penulisan: misalnya, wajib menggunakan semicolon dan tanda kutip tunggal
-            semi: 'off',
+            semi: 'off'
             // quotes: ['error', 'single']
         }
     },
