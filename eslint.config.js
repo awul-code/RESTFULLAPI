@@ -39,13 +39,14 @@ export default [
         // Definisikan aturan linting
         rules: {
             // Aturan dasar ESLint
-            'no-debugger': 'error',
+            // 'no-debugger': 'error',
             // Aturan dari @typescript-eslint
             // "@typescript-eslint/no-unused-vars": "warn",
             '@typescript-eslint/restrict-template-expressions': 'off',
+            "@typescript-eslint/explicit-function-return-type": "off",
             // Aturan gaya penulisan: misalnya, wajib menggunakan semicolon dan tanda kutip tunggal
             semi: 'off',
-            quotes: ['error', 'single']
+            // quotes: ['error', 'single']
         }
     },
     // 3. Override untuk file JavaScript agar diperlakukan sebagai script (bukan module)
