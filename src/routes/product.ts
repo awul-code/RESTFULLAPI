@@ -7,3 +7,8 @@ ProductRouter.get('/', (req: Request, res: Response, next: NextFunction) => {
     logger.info('Product list success')
     res.status(200).send({ status: true, statusCode: 200, data: [{ name: 'Sepatu Sport', price: 500000 }] })
 })
+
+ProductRouter.post('/', (req: Request, res: Response, next: NextFunction) => {
+    logger.info('Success create new product')
+    res.status(200).send({ status: true, statusCode: 200, data: req.body })
+})
