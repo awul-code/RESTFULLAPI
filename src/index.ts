@@ -1,6 +1,6 @@
 import express from 'express'
 import type { Application } from 'express'
-import { routes } from './routes/index'
+import { routes } from './routes/index.route'
 import { logger } from './utils/logger'
 import bodyParser from 'body-parser'
 import cors from 'cors'
