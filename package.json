@@ -1,6 +1,7 @@
 {
     "name": "restfullapi",
     "version": "1.0.0",
+    "type": "module",
     "description": "Rest API",
     "main": "index.js",
     "scripts": {
@@ -14,8 +15,8 @@
         "check-format": "prettier --check .",
         "check-lint": "eslint . --ext ts --ext tsx --ext js"
     },
-    "husky":{
-        "hooks":{
+    "husky": {
+        "hooks": {
             "pre-commit": "npx pretty-quick --staged ng lint ng test",
             "pre-push": "ng build --aot true"
         }
@@ -27,7 +28,7 @@
         "@types/express": "^5.0.0",
         "@typescript-eslint/eslint-plugin": "^8.26.0",
         "@typescript-eslint/parser": "^8.26.0",
-        "eslint": "^9.21.0",
+        "eslint": "^9.22.0",
         "eslint-config-standard": "^17.1.0",
         "eslint-plugin-import": "^2.31.0",
         "eslint-plugin-node": "^11.1.0",
