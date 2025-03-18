@@ -1,30 +1,27 @@
 import { Response, Request } from 'express'
 import { createProductValidation } from '../validations/product.validation'
 import { logger } from '../utils/logger'
+import { getProductFromDB } from '../services/product.service'
 
-export const getProduct = (req: Request, res: Response) => {
-    const products = [
-        {
-            name: 'sepatu sport',
-            price: 500000
-        },
-        {
-            name: 'sepatu vans',
-            price: 560000
-        },
-        {
-            name: 'sepatu converse',
-            price: 450000
-        }
-    ]
+interface ProductType {
+    product_id: string
+    name: string
+    price: number
+    size: string
+}
+
+export const getProduct = async (req: Request, res: Response) => {
+    const product: any = await getProductFromDB()
+
     const {
         params: { name }
     } = req
 
+    // Get detail product
     if (name) {
-        const filteredProduct = products.filter((product) => {
-            if (product.name === name) {
-                return product
+        const filteredProduct = product.filter((productDetail: ProductType) => {
+            if (productDetail.name === name) {
+                return productDetail
             }
         })
         if (filteredProduct.length === 0) {
@@ -32,6 +29,7 @@ export const getProduct = (req: Request, res: Response) => {
             res.status(404).send({ status: false, statusCode: 404, message: `Product ${name} Not Found`, data: {} })
             return
         }
+
         logger.info(`Success get product: ${name}`)
         res.status(200).send({
             status: true,
@@ -42,8 +40,9 @@ export const getProduct = (req: Request, res: Response) => {
         return
     }
 
+    // Get all product
     logger.info('Product list success')
-    res.status(200).send({ status: true, statusCode: 200, data: products })
+    res.status(200).send({ status: true, statusCode: 200, data: product })
     return
 }
 
