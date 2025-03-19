@@ -1,51 +1,38 @@
 import { Response, Request } from 'express'
 import { createProductValidation } from '../validations/product.validation'
 import { logger } from '../utils/logger'
-import { addProductToDB, getProductFromDB } from '../services/product.service'
+import { addProductToDB, getProductById, getProductFromDB } from '../services/product.service'
 import { v4 as uuidv4 } from 'uuid'
-import ProductType from '../types/product.type'
 
 export const getProduct = async (req: Request, res: Response) => {
-    const products: any = await getProductFromDB()
-    logger.info(products)
+    // Get product by id
     const {
-        params: { name }
+        params: { id }
     } = req
 
     // Get detail product
-    if (name) {
-        logger.info(`Received id: ${name}`)
-        logger.info(`Products: ${JSON.stringify(products)}`)
-        const filteredProduct = products.filter((product: ProductType) => {
-            if (product.name === name) {
-                return product
-            }
-        })
-        if (filteredProduct.length === 0) {
-            logger.info(`Product ${name} Not Found`)
-            res.status(404).send({
-                status: false,
-                statusCode: 404,
-                message: `Product ${name} Not Found`,
-                data: {}
+    if (id) {
+        const product = await getProductById(id)
+        if (product) {
+            logger.info(`Success get product data`)
+            res.status(200).send({
+                status: true,
+                statusCode: 200,
+                data: product
             })
             return
+        } else {
+            logger.info('Product not found')
+            res.status(404).send({ status: false, statusCode: 404, message: 'Product not found' })
+            return
         }
-
-        logger.info(`Success get product: ${name}`)
-        res.status(200).send({
-            status: true,
-            statusCode: 200,
-            message: 'Success get product',
-            data: filteredProduct[0]
-        })
+    } else {
+        // Get all product
+        const products: any = await getProductFromDB()
+        logger.info('Product list success')
+        res.status(200).send({ status: true, statusCode: 200, data: products })
         return
     }
-
-    // Get all product
-    logger.info('Product list success')
-    res.status(200).send({ status: true, statusCode: 200, data: products })
-    return
 }
 
 export const createProduct = async (req: Request, res: Response) => {
