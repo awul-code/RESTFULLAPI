@@ -4,33 +4,40 @@ import { logger } from '../utils/logger'
 import { getProductFromDB } from '../services/product.service'
 
 interface ProductType {
-    product_id: string
-    name: string
+    _id: String
+    name: String
     price: number
-    size: string
+    size: String
 }
 
 export const getProduct = async (req: Request, res: Response) => {
-    const product: any = await getProductFromDB()
-
+    const products: any = await getProductFromDB()
+    logger.info(products)
     const {
-        params: { name }
+        params: { id }
     } = req
 
     // Get detail product
-    if (name) {
-        const filteredProduct = product.filter((productDetail: ProductType) => {
-            if (productDetail.name === name) {
-                return productDetail
+    if (id) {
+        logger.info(`Received id: ${id}`)
+        logger.info(`Products: ${JSON.stringify(products)}`)
+        const filteredProduct = products.filter((product: ProductType) => {
+            if (product._id.toString() === id.toString()) {
+                return product
             }
         })
         if (filteredProduct.length === 0) {
-            logger.info(`Product ${name} Not Found`)
-            res.status(404).send({ status: false, statusCode: 404, message: `Product ${name} Not Found`, data: {} })
+            logger.info(`Product ${id} Not Found`)
+            res.status(404).send({
+                status: false,
+                statusCode: 404,
+                message: `Product ${id} Not Found`,
+                data: {}
+            })
             return
         }
 
-        logger.info(`Success get product: ${name}`)
+        logger.info(`Success get product: ${filteredProduct[0].name}`)
         res.status(200).send({
             status: true,
             statusCode: 200,
@@ -42,7 +49,7 @@ export const getProduct = async (req: Request, res: Response) => {
 
     // Get all product
     logger.info('Product list success')
-    res.status(200).send({ status: true, statusCode: 200, data: product })
+    res.status(200).send({ status: true, statusCode: 200, data: products })
     return
 }
 
