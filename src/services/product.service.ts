@@ -1,5 +1,10 @@
+import ProductType from '../types/product.type'
 import productModel from '../models/product.model'
 import { logger } from '../utils/logger'
+
+export const addProductToDB = async (payload: ProductType) => {
+    return await productModel.create(payload)
+}
 
 export const getProductFromDB = async () => {
     return await productModel
