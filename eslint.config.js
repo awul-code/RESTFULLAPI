@@ -44,7 +44,7 @@ export default [
             '@typescript-eslint/strict-boolean-expression': 'off',
             semi: 'off',
             'no-return-assign': 'off',
-            'array-callback-return': 'off',
+            'array-callback-return': 'off'
         }
     },
     // 3. Override untuk file JavaScript agar diperlakukan sebagai script (bukan module)
