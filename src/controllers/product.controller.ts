@@ -1,7 +1,7 @@
 import { Response, Request } from 'express'
-import { createProductValidation } from '../validations/product.validation'
+import { createProductValidation, updateProductValidation } from '../validations/product.validation'
 import { logger } from '../utils/logger'
-import { addProductToDB, getProductById, getProductFromDB } from '../services/product.service'
+import { addProductToDB, getProductById, getProductFromDB, updateProductById } from '../services/product.service'
 import { v4 as uuidv4 } from 'uuid'
 
 export const getProduct = async (req: Request, res: Response) => {
@@ -50,6 +50,30 @@ export const createProduct = async (req: Request, res: Response) => {
         return
     } catch (error) {
         logger.error('Validation ERR product-create: ', error)
+        res.status(422).send({ status: false, statusCode: 422, message: error })
+        return
+    }
+}
+
+export const updateProduct = async (req: Request, res: Response) => {
+    const {
+        params: { id }
+    } = req
+
+    const { error, value } = updateProductValidation(req.body)
+    if (error) {
+        logger.error('Validation ERR product-update: ', error.details[0].message)
+        res.status(422).send({ status: false, statusCode: 422, message: error.details[0].message })
+        return
+    }
+
+    try {
+        await updateProductById(id, value)
+        logger.info('Success update  product')
+        res.status(201).send({ status: true, statusCode: 201, message: 'Update product success' })
+        return
+    } catch (error) {
+        logger.error('Validation ERR product-update: ', error)
         res.status(422).send({ status: false, statusCode: 422, message: error })
         return
     }
